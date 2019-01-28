@@ -31,7 +31,7 @@ As far as features go, we plan on offering channels or group messages based on s
 
 For the minimum viable product, we plan on implementing channel offerings based on similar interests and building channels based on geolocation; however, if we have more time, we would like to offer other features such as campus related events which would capture relevant news feeds that are dedicated to the campus and create specific channels around the time of the event. We would like to offer a chat filtering system based on machine learning to filter specific messages and images so that otherwise harmful or explicit content may be discarded. Since the initial set of channel offerings will have to be manually created i.e. explicitly programming the bounds for the geolocation of buildings and adding major related channels, we would like to devise an additional computational layer behind the database that frequently analyzes data and automatically creates new channels. This would allow users to have a more socially interactive experience.
 
-![Architecture Diagram](CampusGroupChat/architecture.png)
+![Architecture Diagram](https://github.com/CS340-19/CampusGroupChat/blob/master/architecture.png?raw=true)
 
 We plan on writing unit tests throughout the development process to ensure there are no edge cases and functions work as desired. In addition, we will implement several widget tests to make sure our major features function properly. If time allows, we will offer the product to various peer groups from different colleges to test the product. In particular, we will request information regarding the UI experience, ease of usage, and overall benefit. 
 
