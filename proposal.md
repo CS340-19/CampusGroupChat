@@ -1,11 +1,11 @@
 # Campus Chat App
 
-# Rockstar Developers
+### Rockstar Developers
 
-## Bryson Howell
-## Spencer Howell
-## Ankush Patel
-## Hearan Kim
+### Bryson Howell
+### Spencer Howell
+### Ankush Patel
+### Hearan Kim
 
 
 ## Introduction
