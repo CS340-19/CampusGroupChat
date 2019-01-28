@@ -31,6 +31,8 @@ As far as features go, we plan on offering channels or group messages based on s
 
 For the minimum viable product, we plan on implementing channel offerings based on similar interests and building channels based on geolocation; however, if we have more time, we would like to offer other features such as campus related events which would capture relevant news feeds that are dedicated to the campus and create specific channels around the time of the event. We would like to offer a chat filtering system based on machine learning to filter specific messages and images so that otherwise harmful or explicit content may be discarded. Since the initial set of channel offerings will have to be manually created i.e. explicitly programming the bounds for the geolocation of buildings and adding major related channels, we would like to devise an additional computational layer behind the database that frequently analyzes data and automatically creates new channels. This would allow users to have a more socially interactive experience.
 
+![Architecture Diagram](CampusGroupChat/architecture.png)
+
 We plan on writing unit tests throughout the development process to ensure there are no edge cases and functions work as desired. In addition, we will implement several widget tests to make sure our major features function properly. If time allows, we will offer the product to various peer groups from different colleges to test the product. In particular, we will request information regarding the UI experience, ease of usage, and overall benefit. 
 
 We will use Android Studio along with Flutter’s integrated IDE tools to build our product on IOS and Android. Furthermore, we plan on using Flutter’s hot reload feature to enable fast testing while building new features and experimenting with the UI via mobile emulation. As far as integrating with the backend and using geolocation goes, Flutter offers several packages which will streamline the process of development. Furthermore, we plan on using Git as our version control system to manage our code.
@@ -70,4 +72,4 @@ There are currently not any regulations that would hinder development of our mes
 ## References
 [1]  “The best way to chat with everyone you know,” GroupMe, 2019. [Online]. Available: https://groupme.com/en-US/. [Accessed: 28-Jan-2019].
 
-[2] Valeriya, “The Rise and Fall of Yik Yak, the Anonymous Messaging App,” The New York TImes, 27-May-2017. [Online]. Available: https://www.nytimes.com/2017/05/27/style/yik-yak-bullying-mary-washington.html. [Accessed: 28-Jan-2019].
+[2] Valeriya, “The Rise and Fall of Yik Yak, the Anonymous Messaging App,” The New York Times, 27-May-2017. [Online]. Available: https://www.nytimes.com/2017/05/27/style/yik-yak-bullying-mary-washington.html. [Accessed: 28-Jan-2019].
