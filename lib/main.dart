@@ -21,7 +21,7 @@ class ChatScreen extends StatefulWidget {
   State createState() => new ChatScreenState();
 }
 
-class ChatScreenState extends State<ChatScreen> {
+class ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin{
   final List<ChatMessage> _messages = <ChatMessage>[];
   final TextEditingController _textController = new TextEditingController();
 
@@ -56,10 +56,15 @@ class ChatScreenState extends State<ChatScreen> {
     _textController.clear();
     ChatMessage message = new ChatMessage(
       text: text,
+      animationController: new AnimationController(
+        duration: new Duration(milliseconds: 700),
+        vsync: this,
+      ),
     );
     setState(() {
       _messages.insert(0, message);
     });
+    message.animationController.forward();
   }
 
   @override
@@ -86,14 +91,27 @@ class ChatScreenState extends State<ChatScreen> {
       ),                                                            //new
     );
   }
+
+  @override
+  void dispose() {
+    for (ChatMessage message in _messages)
+      message.animationController.dispose();
+    super.dispose();
+  }
 }
 
 class ChatMessage extends StatelessWidget {
-  ChatMessage({this.text});
+  ChatMessage({this.text, this.animationController});
   final String text;
+  final AnimationController animationController;
+
   @override
   Widget build(BuildContext context) {
-    return new Container(
+    return new SizeTransition(
+      sizeFactor: new CurvedAnimation(
+          parent: animationController, curve: Curves.easeOut),
+      axisAlignment: 0.0,
+    child: new Container(
       margin: const EdgeInsets.symmetric(vertical: 10.0),
       child: new Row(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -114,6 +132,7 @@ class ChatMessage extends StatelessWidget {
           ),
         ],
       ),
+    )
     );
   }
 }
