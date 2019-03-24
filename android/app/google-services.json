@@ -15,11 +15,11 @@
       },
       "oauth_client": [
         {
-          "client_id": "415878567501-71qa1oq2ga6iju4jad732rq91el5m1fo.apps.googleusercontent.com",
+          "client_id": "415878567501-2hp6pvh6ph5clrphjuvaa875usjat70t.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.campuschat",
-            "certificate_hash": "503f88c49193d9621ab4ab5009cd275dbd1ea756"
+            "certificate_hash": "81c56639db6898ba9c2b3a77e61636cda4d5f79f"
           }
         },
         {

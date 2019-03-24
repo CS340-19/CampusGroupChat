@@ -1,6 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'dart:async';
 
 const String _name = "Rockstar Rick";
+final googleSignIn = new GoogleSignIn();
+final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
 void main() {
   runApp(new CampuschatApp());
@@ -24,6 +31,7 @@ class ChatScreen extends StatefulWidget {
 class ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin{
   final List<ChatMessage> _messages = <ChatMessage>[];
   final TextEditingController _textController = new TextEditingController();
+  bool _isComposing = false;
 
   Widget _buildTextComposer() {
     return new IconTheme(
@@ -35,16 +43,24 @@ class ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin{
             new Flexible( // Text field -- fills up remaining space in row
               child: new TextField(
                 controller: _textController,
+                onChanged: (String text) {
+                  setState(() {
+                    _isComposing = text.length > 0;
+                  });
+                },
                 onSubmitted: _handleSubmitted,
-                decoration: new InputDecoration.collapsed(
-                    hintText: "Send a message"),
+                decoration:
+                new InputDecoration.collapsed(hintText: "Send a message"),
               ),
             ),
             new Container( // Send button)
               margin: new EdgeInsets.symmetric(horizontal: 4.0),
               child: new IconButton(
                 icon: new Icon(Icons.send),
-                onPressed: () => _handleSubmitted(_textController.text)),
+                onPressed: _isComposing
+                    ? () => _handleSubmitted(_textController.text)
+                    : null,
+              ),
             ),
           ]
         )
@@ -52,8 +68,28 @@ class ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin{
     );
   }
 
-  void _handleSubmitted(String text) {
+  // Sign user in
+  // Attempts in background first, then process begins if not successful
+  Future<Null> _ensureLoggedIn() async {
+    GoogleSignInAccount user = googleSignIn.currentUser;
+    if (user == null)
+      user = await googleSignIn.signInSilently();
+    if (user == null) {
+      await googleSignIn.signIn();
+    }
+  }
+
+  Future<Null> _handleSubmitted(String text) async {
     _textController.clear();
+    setState(() {
+      _isComposing = false;
+    });
+    await _ensureLoggedIn();
+    _sendMessage(text: text);
+  }
+
+
+  void _sendMessage({ String text }) {
     ChatMessage message = new ChatMessage(
       text: text,
       animationController: new AnimationController(
@@ -98,6 +134,7 @@ class ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin{
       message.animationController.dispose();
     super.dispose();
   }
+
 }
 
 class ChatMessage extends StatelessWidget {
@@ -120,15 +157,17 @@ class ChatMessage extends StatelessWidget {
             margin: const EdgeInsets.only(right: 16.0),
             child: new CircleAvatar(child: new Text(_name[0])),
           ),
-          new Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              new Text(_name, style: Theme.of(context).textTheme.subhead),
-              new Container(
-                margin: const EdgeInsets.only(top: 5.0),
-                child: new Text(text),
-              ),
-            ],
+          new Expanded(
+            child: new Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                new Text(_name, style: Theme.of(context).textTheme.subhead),
+                new Container(
+                  margin: const EdgeInsets.only(top: 5.0),
+                  child: new Text(text),
+                ),
+              ],
+            ),
           ),
         ],
       ),
