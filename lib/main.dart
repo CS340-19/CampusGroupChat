@@ -10,7 +10,7 @@ class CampuschatApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
-      title: "Campuschat",
+      title: "CampusChat",
       home: new ChatScreen(),
     );
   }
@@ -70,7 +70,7 @@ class ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin{
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      appBar: new AppBar(title: new Text("Campuschat")),
+      appBar: new AppBar(title: new Text("Campus Chat")),
       body: new Column(                                        //modified
         children: <Widget>[                                         //new
           new Flexible(                                             //new
