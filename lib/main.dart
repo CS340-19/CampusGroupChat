@@ -6,7 +6,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'dart:async';
 
 final googleSignIn = new GoogleSignIn();
-final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+final FirebaseAuth auth = FirebaseAuth.instance;
 
 void main() {
   runApp(new CampuschatApp());
@@ -75,6 +75,18 @@ class ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin{
       user = await googleSignIn.signInSilently();
     if (user == null) {
       await googleSignIn.signIn();
+    }
+
+    // Authenticate user
+    // Uses updated method of FireBase Authentication
+    if (await auth.currentUser() == null) {
+      final GoogleSignInAuthentication googleAuth =
+          await googleSignIn.currentUser.authentication;
+      final AuthCredential credential = GoogleAuthProvider.getCredential(
+          idToken: googleAuth.idToken,
+          accessToken: googleAuth.accessToken,
+      );
+      await auth.signInWithCredential(credential);
     }
   }
 
