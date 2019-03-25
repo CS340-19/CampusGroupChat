@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'dart:async';
+import 'dart:developer';
 
 final googleSignIn = new GoogleSignIn();
 final FirebaseAuth auth = FirebaseAuth.instance;
@@ -27,9 +30,9 @@ class ChatScreen extends StatefulWidget {
   State createState() => new ChatScreenState();
 }
 
-class ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin{
-  final List<ChatMessage> _messages = <ChatMessage>[];
+class ChatScreenState extends State<ChatScreen> {
   final TextEditingController _textController = new TextEditingController();
+  final reference = FirebaseDatabase.instance.reference().child('messages');
   bool _isComposing = false;
 
   Widget _buildTextComposer() {
@@ -101,63 +104,54 @@ class ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin{
 
 
   void _sendMessage({ String text }) {
-    ChatMessage message = new ChatMessage(
-      text: text,
-      animationController: new AnimationController(
-        duration: new Duration(milliseconds: 700),
-        vsync: this,
-      ),
-    );
-    setState(() {
-      _messages.insert(0, message);
+    reference.push().set({
+      'text': text,
+      'senderName': googleSignIn.currentUser.displayName,
+      'senderPhotoUrl': googleSignIn.currentUser.photoUrl,
     });
-    message.animationController.forward();
   }
 
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: new AppBar(title: new Text("Campus Chat")),
-      body: new Column(                                        //modified
-        children: <Widget>[                                         //new
-          new Flexible(                                             //new
-            child: new ListView.builder(                            //new
-              padding: new EdgeInsets.all(8.0),                     //new
-              reverse: true,                                        //new
-              itemBuilder: (_, int index) => _messages[index],      //new
-              itemCount: _messages.length,                          //new
-            ),                                                      //new
-          ),                                                        //new
-          new Divider(height: 1.0),                                 //new
-          new Container(                                            //new
-            decoration: new BoxDecoration(
-                color: Theme.of(context).cardColor),                  //new
-            child: _buildTextComposer(),                       //modified
-          ),                                                        //new
-        ],                                                          //new
-      ),                                                            //new
+      body: new Column(children: <Widget>[
+        new Flexible(
+          child: new FirebaseAnimatedList(
+              query: reference,
+              sort:(a, b) => b.key.compareTo(a.key),
+              padding: new EdgeInsets.all(8.0),
+              reverse: true,
+              itemBuilder: (_, DataSnapshot snapshot, Animation<double> animation, index) {
+               return new ChatMessage(
+                 snapshot: snapshot,
+                 animation: animation
+               );
+              },
+        ),
+        ),
+        new Divider(height: 1.0),
+        new Container(
+          decoration:
+            new BoxDecoration(color: Theme.of(context).cardColor),
+          child: _buildTextComposer(),
+        ),
+      ]
+      )
     );
   }
-
-  @override
-  void dispose() {
-    for (ChatMessage message in _messages)
-      message.animationController.dispose();
-    super.dispose();
-  }
-
 }
 
 class ChatMessage extends StatelessWidget {
-  ChatMessage({this.text, this.animationController});
-  final String text;
-  final AnimationController animationController;
+  ChatMessage({this.snapshot, this.animation});
+  final DataSnapshot snapshot;
+  final Animation animation;
 
   @override
   Widget build(BuildContext context) {
     return new SizeTransition(
       sizeFactor: new CurvedAnimation(
-          parent: animationController, curve: Curves.easeOut),
+          parent: animation, curve: Curves.easeOut),
       axisAlignment: 0.0,
     child: new Container(
       margin: const EdgeInsets.symmetric(vertical: 10.0),
@@ -168,18 +162,18 @@ class ChatMessage extends StatelessWidget {
             margin: const EdgeInsets.only(right: 16.0),
             child: new CircleAvatar(
               backgroundImage:
-                new NetworkImage(googleSignIn.currentUser.photoUrl),
+                new NetworkImage(snapshot.value['senderPhotoUrl']),
               )
             ),
           new Expanded(
             child: new Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                new Text(googleSignIn.currentUser.displayName,
+                new Text(snapshot.value['senderName'],
                          style: Theme.of(context).textTheme.subhead),
                 new Container(
                   margin: const EdgeInsets.only(top: 5.0),
-                  child: new Text(text),
+                  child: new Text(snapshot.value['text']),
                 ),
               ],
             ),
