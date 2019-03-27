@@ -17,7 +17,7 @@ The backend of our app uses Google Firebase to implement the user information an
 
 Our goal for this iteration was to implement the basic messaging system for the app, and we were mostly successful in this aspect. Our current app allows students to login with their Google accounts, access our database, and message with other students at UT. Below is a screenshot of the app in action:
 
-![Chat Screen] (https://github.com/CS340-19/CampusGroupChat/blob/interface/chat_screenshot.png)
+![Chat Screen](https://github.com/CS340-19/CampusGroupChat/blob/interface/chat_screenshot.png)
 
 To test the app, we have deployed it on a variety of Android devices, including physical devices and virtual machines. We are still in the process of implementing the iOS specific features in order to deploy to the platform, but we will conduct further tests once these features are complete. 
 
