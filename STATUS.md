@@ -17,7 +17,7 @@ The backend of our app uses Google Firebase to implement the user information an
 
 Our goal for this iteration was to implement the basic messaging system for the app, and we were mostly successful in this aspect. Our current app allows students to login with their Google accounts, access our database, and message with other students at UT. Below is a screenshot of the app in action:
 
-![Chat Screen](https://github.com/CS340-19/CampusGroupChat/blob/interface/chat_screenshot.png)
+![Chat Screen](https://github.com/CS340-19/CampusGroupChat/blob/interface/chat_screenshot.png =250x)
 
 To test the app, we have deployed it on a variety of Android devices, including physical devices and virtual machines. We are still in the process of implementing the iOS specific features in order to deploy to the platform, but we will conduct further tests once these features are complete. 
 
@@ -36,5 +36,8 @@ Our schedule has changed slightly due to our team being behind our estimated sch
 * 4/20: Final project testing and demo prepartion
 
 ## Reflection
+For this iteration of the product, we had several successes. Our team was able to set up and configure the tools required for us to develop Flutter applications for Android and iOS, and integrate GitHub in order to collaborate and share our work. We were also able to create a rudimentary app by referring to documentation and example code for Flutter applications.
 
+Our difficulties came from reconciling the changes that have been made in Flutter recently with the resources that we used. Since Flutter is a very new technology, a lot has changed in it recently, and as a result a lot of online documentation is out of date. This made progress slower than anticipated and has resulted in our team being slightly behind schedule.
 
+For the next iteration of development, we plan on moving more quickly now that we have a solid understanding of the platform and language we are developing with. In addition, we plan on making collaboration easier by creating separate branches for features being developed, and then merging these branches together in the master branch. This will allow us to be more efficient in our implementations.
