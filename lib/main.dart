@@ -27,14 +27,31 @@ class CampuschatApp extends StatelessWidget {
 }
 
 class ChatScreen extends StatefulWidget {
+  final String title;
+  final String refString;
+
+  // Require a refString in this constructor
+  ChatScreen({Key key, @required this.title, @required this.refString}) : super (key: key);
+
   @override
-  State createState() => new ChatScreenState();
+  State createState() => new ChatScreenState(this.title, this.refString);
 }
 
 class ChatScreenState extends State<ChatScreen> {
   final TextEditingController _textController = new TextEditingController();
-  final reference = FirebaseDatabase.instance.reference().child('messages');
   bool _isComposing = false;
+  final String title;
+  final String refString;
+
+  // Require a refString in this constructor
+  ChatScreenState(this.title, this.refString);
+
+  void initState() {
+    super.initState();
+    reference = FirebaseDatabase.instance.reference().child(refString);
+  }
+
+  DatabaseReference reference;
 
   Widget _buildTextComposer() {
     return new IconTheme(
@@ -115,7 +132,7 @@ class ChatScreenState extends State<ChatScreen> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      appBar: new AppBar(title: new Text("Campus Chat")),
+      appBar: new AppBar(title: new Text(this.title)),
       body: new Column(children: <Widget>[
         new Flexible(
           child: new FirebaseAnimatedList(
@@ -204,24 +221,37 @@ class ChatSelectState extends State<ChatSelect> {
           Card(
             child: new InkWell(
               onTap: () {
-                Navigator.push(context, new MaterialPageRoute(builder: (context) => new ChatScreen()));
+                Navigator.push(context, new MaterialPageRoute(builder: (context)
+                  => new ChatScreen(title: "Test Chat", refString: 'messages')));
               },
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
-                child: Text('Developer', style: TextStyle(fontSize: 22.0)),
+                child: Text('Test', style: TextStyle(fontSize: 22.0)),
               ),
             ),
           ),
           Card(
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Text('Computer Science', style: TextStyle(fontSize: 22.0)),
+            child: new InkWell(
+              onTap: () {
+                Navigator.push(context, new MaterialPageRoute(builder: (context)
+                => new ChatScreen(title: "Vol Basketball", refString: 'basketball')));
+              },
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Text('Vol Basketball', style: TextStyle(fontSize: 22.0)),
+              ),
             ),
           ),
           Card(
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Text('March Madness', style: TextStyle(fontSize: 22.0)),
+            child: new InkWell(
+              onTap: () {
+                Navigator.push(context, new MaterialPageRoute(builder: (context)
+                => new ChatScreen(title: "Computer Science", refString: 'computer_science')));
+              },
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Text('Computer Science', style: TextStyle(fontSize: 22.0)),
+              ),
             ),
           ),
         ],
