@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -20,7 +21,7 @@ class CampuschatApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return new MaterialApp(
       title: "CampusChat",
-      home: new ChatScreen(),
+      home: new ChatSelect(),
     );
   }
 }
@@ -181,6 +182,50 @@ class ChatMessage extends StatelessWidget {
         ],
       ),
     )
+    );
+  }
+}
+
+class ChatSelect extends StatefulWidget {
+  @override
+  State createState() => new ChatSelectState();
+}
+
+class ChatSelectState extends State<ChatSelect> {
+  @override
+  Widget build(BuildContext context) {
+    final title = 'Campus Chat';
+    return new Scaffold(
+      appBar: AppBar(
+        title: Text(title),
+      ),
+      body: ListView(
+        children: <Widget>[
+          Card(
+            child: new InkWell(
+              onTap: () {
+                Navigator.push(context, new MaterialPageRoute(builder: (context) => new ChatScreen()));
+              },
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Text('Developer', style: TextStyle(fontSize: 22.0)),
+              ),
+            ),
+          ),
+          Card(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Text('Computer Science', style: TextStyle(fontSize: 22.0)),
+            ),
+          ),
+          Card(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Text('March Madness', style: TextStyle(fontSize: 22.0)),
+            ),
+          ),
+        ],
+      )
     );
   }
 }
