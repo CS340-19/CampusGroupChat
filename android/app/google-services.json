@@ -23,8 +23,12 @@
           }
         },
         {
-          "client_id": "415878567501-41bum97i1j7ahpkh3qrphr0d9mvjc1l3.apps.googleusercontent.com",
-          "client_type": 3
+          "client_id": "415878567501-da533ifluudoo8jmo8mmaq9cdu61ij67.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.campuschat",
+            "certificate_hash": "21b3971016cea89cffe0f2c24e38b1cdad2ba8f3"
+          }
         }
       ],
       "api_key": [
@@ -33,20 +37,20 @@
         }
       ],
       "services": {
-        "analytics_service": {
-          "status": 1
-        },
         "appinvite_service": {
-          "status": 2,
           "other_platform_oauth_client": [
             {
               "client_id": "415878567501-41bum97i1j7ahpkh3qrphr0d9mvjc1l3.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "415878567501-9d2ok2mc37cfbpbr3lrkob0or3hpt0fd.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.campusChat"
+              }
             }
           ]
-        },
-        "ads_service": {
-          "status": 2
         }
       }
     }
