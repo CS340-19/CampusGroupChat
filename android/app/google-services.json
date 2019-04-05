@@ -23,11 +23,11 @@
           }
         },
         {
-          "client_id": "415878567501-da533ifluudoo8jmo8mmaq9cdu61ij67.apps.googleusercontent.com",
+          "client_id": "415878567501-5jnv8aerr1licgdm3fqstlr7roq77g2t.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.campuschat",
-            "certificate_hash": "21b3971016cea89cffe0f2c24e38b1cdad2ba8f3"
+            "certificate_hash": "7b02993221cc0b7bc22a121b787f720a618727e7"
           }
         }
       ],
