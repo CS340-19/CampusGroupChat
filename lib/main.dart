@@ -117,15 +117,16 @@ class ChatScreenState extends State<ChatScreen> {
       _isComposing = false;
     });
     await _ensureLoggedIn();
-    _sendMessage(text: text);
+    _sendMessage(googleSignIn.currentUser, text: text);
   }
 
 
-  void _sendMessage({ String text }) {
+   _sendMessage(GoogleSignInAccount user, {String text}) {
     reference.push().set({
       'text': text,
-      'senderName': googleSignIn.currentUser.displayName,
-      'senderPhotoUrl': googleSignIn.currentUser.photoUrl,
+      'senderName': user.displayName,
+      'senderPhotoUrl': user.photoUrl,
+      //'senderPhotoUrl': "https://avatars3.githubusercontent.com/u/7920823?s=460&v=4",
     });
   }
 
@@ -165,6 +166,32 @@ class ChatMessage extends StatelessWidget {
   final DataSnapshot snapshot;
   final Animation animation;
 
+  NetworkImage _getAvatar() {
+    if (snapshot.value['senderPhotoUrl'] != null) {
+      return new NetworkImage(snapshot.value['senderPhotoUrl']);
+    } else {
+      //return new NetworkImage('https://avatars3.githubusercontent.com/u/7920823?s=460&v=4');
+    }
+  }
+
+  Text _getSender(BuildContext context) {
+    if (snapshot.value['senderName'] != null) {
+      return new Text(snapshot.value['senderName'],
+                      style: Theme.of(context).textTheme.subhead);
+    } else {
+      return new Text('???',
+                      style: Theme.of(context).textTheme.subhead);
+    }
+  }
+
+  Text _getText() {
+    if (snapshot.value['text'] != null) {
+      return new Text(snapshot.value['text']);
+    } else {
+      return new Text('???');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return new SizeTransition(
@@ -179,19 +206,17 @@ class ChatMessage extends StatelessWidget {
           new Container(
             margin: const EdgeInsets.only(right: 16.0),
             child: new CircleAvatar(
-              backgroundImage:
-                new NetworkImage(snapshot.value['senderPhotoUrl']),
-              )
-            ),
+              backgroundImage: _getAvatar()
+            )
+          ),
           new Expanded(
             child: new Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                new Text(snapshot.value['senderName'],
-                         style: Theme.of(context).textTheme.subhead),
+                _getSender(context),
                 new Container(
                   margin: const EdgeInsets.only(top: 5.0),
-                  child: new Text(snapshot.value['text']),
+                  child: _getText(),
                 ),
               ],
             ),
