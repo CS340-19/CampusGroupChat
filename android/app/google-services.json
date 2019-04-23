@@ -29,6 +29,18 @@
             "package_name": "com.example.campuschat",
             "certificate_hash": "7b02993221cc0b7bc22a121b787f720a618727e7"
           }
+        },
+        {
+          "client_id": "415878567501-tdhnjbeupboaq45mtfgscg3g2udne8eg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.campuschat",
+            "certificate_hash": "ced53495091589b5adeeae2d6fcfebd840f14631"
+          }
+        },
+        {
+          "client_id": "415878567501-41bum97i1j7ahpkh3qrphr0d9mvjc1l3.apps.googleusercontent.com",
+          "client_type": 3
         }
       ],
       "api_key": [
