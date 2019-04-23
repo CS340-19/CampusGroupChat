@@ -14,6 +14,8 @@ import 'package:simple_permissions/simple_permissions.dart';
 
 final googleSignIn = new GoogleSignIn();
 final FirebaseAuth auth = FirebaseAuth.instance;
+var location = new Location();
+var currLoc;
 
 void main() {
   _getLocation();
@@ -24,23 +26,11 @@ Future<Null> _getLocation() async {
   final res = await SimplePermissions.requestPermission(Permission.AccessFineLocation);
   print("permission request result is " + res.toString());
 
-  var currentLocation = <String, double>{};
-
-  var location = new Location();
-
-  // Platform messages may fail, so we use a try/catch PlatformException.
-  try {
-    print("Trying to grab location");
-    currentLocation = await location.getLocation();
-    print(currentLocation["latitude"]);
-    print(currentLocation["longitude"]);
-    print(currentLocation["accuracy"]);
-    print(currentLocation["altitude"]);
-    print(currentLocation["speed"]);
-    print(currentLocation["speed_accuracy"]); // Will always be 0 on iOS
-  } on PlatformException {
-    print("Err: PlatformException");
-  }
+  location.onLocationChanged().listen((Map<String,double> currentLocation) {
+    currLoc = currentLocation;
+    if(currLoc != null) runApp(new CampuschatApp());
+    print(currLoc);
+  });
 }
 
 class CampuschatApp extends StatelessWidget {
@@ -258,55 +248,49 @@ class ChatMessage extends StatelessWidget {
 class ChatSelect extends StatefulWidget {
   @override
   State createState() => new ChatSelectState();
+
 }
 
 class ChatSelectState extends State<ChatSelect> {
   @override
   Widget build(BuildContext context) {
     final title = 'Campus Chat';
+    var cards = <Widget>{};
+
+    var refStrings = ['messages', 'basketball', 'computer_science'];
+
+    for (var i = 0; i < refStrings.length; i++) {
+      cards.add(Card(
+        child: new InkWell(
+          onTap: () {
+            Navigator.push(context, new MaterialPageRoute(
+                builder: (context) => new ChatScreen(
+                    title: "Test Chat", refString: refStrings[i])));
+          },
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Text(refStrings[i], style: TextStyle(fontSize: 22.0)),
+          ),
+        ),
+      ));
+    }
+
+    cards.add(RichText(
+      text: TextSpan(
+        text: 'Location',
+        style: DefaultTextStyle.of(context).style,
+        children: <TextSpan>[
+          TextSpan(text: '$currLoc', style: TextStyle(fontWeight: FontWeight.bold)),
+        ],
+      ),
+    ));
+
     return new Scaffold(
       appBar: AppBar(
         title: Text(title),
       ),
       body: ListView(
-        children: <Widget>[
-          Card(
-            child: new InkWell(
-              onTap: () {
-                Navigator.push(context, new MaterialPageRoute(builder: (context)
-                  => new ChatScreen(title: "Test Chat", refString: 'messages')));
-              },
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Text('Test', style: TextStyle(fontSize: 22.0)),
-              ),
-            ),
-          ),
-          Card(
-            child: new InkWell(
-              onTap: () {
-                Navigator.push(context, new MaterialPageRoute(builder: (context)
-                => new ChatScreen(title: "Vol Basketball", refString: 'basketball')));
-              },
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Text('Vol Basketball', style: TextStyle(fontSize: 22.0)),
-              ),
-            ),
-          ),
-          Card(
-            child: new InkWell(
-              onTap: () {
-                Navigator.push(context, new MaterialPageRoute(builder: (context)
-                => new ChatScreen(title: "Computer Science", refString: 'computer_science')));
-              },
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Text('Computer Science', style: TextStyle(fontSize: 22.0)),
-              ),
-            ),
-          ),
-        ],
+        children: cards.toList(),
       )
     );
   }
