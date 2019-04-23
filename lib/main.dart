@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -8,12 +9,38 @@ import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'dart:async';
 import 'dart:developer';
+import 'package:location/location.dart';
+import 'package:simple_permissions/simple_permissions.dart';
 
 final googleSignIn = new GoogleSignIn();
 final FirebaseAuth auth = FirebaseAuth.instance;
 
 void main() {
+  _getLocation();
   runApp(new CampuschatApp());
+}
+
+Future<Null> _getLocation() async {
+  final res = await SimplePermissions.requestPermission(Permission.AccessFineLocation);
+  print("permission request result is " + res.toString());
+
+  var currentLocation = <String, double>{};
+
+  var location = new Location();
+
+  // Platform messages may fail, so we use a try/catch PlatformException.
+  try {
+    print("Trying to grab location");
+    currentLocation = await location.getLocation();
+    print(currentLocation["latitude"]);
+    print(currentLocation["longitude"]);
+    print(currentLocation["accuracy"]);
+    print(currentLocation["altitude"]);
+    print(currentLocation["speed"]);
+    print(currentLocation["speed_accuracy"]); // Will always be 0 on iOS
+  } on PlatformException {
+    print("Err: PlatformException");
+  }
 }
 
 class CampuschatApp extends StatelessWidget {
