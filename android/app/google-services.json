@@ -1,0 +1,59 @@
+{
+  "project_info": {
+    "project_number": "415878567501",
+    "firebase_url": "https://campuschat-b9b42.firebaseio.com",
+    "project_id": "campuschat-b9b42",
+    "storage_bucket": "campuschat-b9b42.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:415878567501:android:f44d57facd5777fe",
+        "android_client_info": {
+          "package_name": "com.example.campuschat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "415878567501-2hp6pvh6ph5clrphjuvaa875usjat70t.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.campuschat",
+            "certificate_hash": "81c56639db6898ba9c2b3a77e61636cda4d5f79f"
+          }
+        },
+        {
+          "client_id": "415878567501-5jnv8aerr1licgdm3fqstlr7roq77g2t.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.campuschat",
+            "certificate_hash": "7b02993221cc0b7bc22a121b787f720a618727e7"
+          }
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC_s1fyrWCsdUURI6fqluiYgqZpb49ZPpk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "415878567501-41bum97i1j7ahpkh3qrphr0d9mvjc1l3.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "415878567501-9d2ok2mc37cfbpbr3lrkob0or3hpt0fd.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.campusChat"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
