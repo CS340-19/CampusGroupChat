@@ -279,7 +279,9 @@ class ChatSelectState extends State<ChatSelect> {
 
     var refStrings = ['messages', 'basketball', 'computer_science',
     'demoRoom', 'demoRoom2'];
-    var titleStrings = ['Messages', 'Basketball', 'Min Kao', 'CS340 Back', 'CS340 Front'];
+    var titleStrings = ['General', 'Basketball', 'Min Kao', 'CS340 Back', 'CS340 Front'];
+    var titleImages = ["assets/message.png", "assets/basketball.png",
+    "assets/minkao.jpg", "assets/logo.png", "assets/logo.png"];
 
     for (var i = 0; i < refStrings.length; i++) {
       if ((refStrings[i] == 'demoRoom' && currDif[0] <= 0.0001 && currDif[1] <= 0.0001) ||
@@ -293,9 +295,27 @@ class ChatSelectState extends State<ChatSelect> {
                   new ChatScreen(
                       title: titleStrings[i], refString: refStrings[i])));
             },
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Text(titleStrings[i], style: TextStyle(fontSize: 22.0)),
+            child: new Row(
+              children: <Widget>[
+                new Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ClipRRect(
+                    borderRadius: new BorderRadius.circular(8.0),
+                    child: Image(
+                      image: new AssetImage(titleImages[i]),
+                      width: 100,
+                      height: 100,
+                      color: null,
+                      fit: BoxFit.cover,
+                      alignment: Alignment.center,
+                    ),
+                  ),
+                ),
+                new Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Text(titleStrings[i], style: TextStyle(fontSize: 22.0)),
+                ),
+              ],
             ),
           ),
         ));
