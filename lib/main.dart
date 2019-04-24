@@ -17,6 +17,11 @@ final FirebaseAuth auth = FirebaseAuth.instance;
 var location = new Location();
 var currLoc;
 
+// For test chat room
+var initLoc;
+var testRadius = [0.0, 0.0];
+var currDif = [0.0, 0.0]; // Lat and lng diff from init
+
 void main() {
   _getLocation();
   runApp(new CampuschatApp());
@@ -27,9 +32,24 @@ Future<Null> _getLocation() async {
   print("permission request result is " + res.toString());
 
   location.onLocationChanged().listen((Map<String,double> currentLocation) {
-    currLoc = currentLocation;
-    if(currLoc != null) runApp(new CampuschatApp());
-    print(currLoc);
+      if (initLoc == null) {
+        initLoc = currentLocation;
+        testRadius[0] = initLoc["latitude"];
+        testRadius[1] = initLoc["longitude"];
+
+        print("test location: " + initLoc.toString());
+      }
+      currLoc = currentLocation;
+      if (currLoc != null) {
+        currDif[0] = testRadius[0] - currLoc["latitude"];
+        currDif[0] = currDif[0].abs();
+        currDif[1] = testRadius[1] - currLoc["longitude"];
+        currDif[1] = currDif[1].abs();
+
+        runApp(new CampuschatApp());
+
+        print(currLoc);
+      }
   });
 }
 
@@ -257,33 +277,41 @@ class ChatSelectState extends State<ChatSelect> {
     final title = 'Campus Chat';
     var cards = <Widget>{};
 
-    var refStrings = ['messages', 'basketball', 'computer_science'];
+    var refStrings = ['messages', 'basketball', 'computer_science',
+    'demoRoom', 'demoRoom2'];
+    var titleStrings = ['Messages', 'Basketball', 'Min Kao', 'CS340 Back', 'CS340 Front'];
 
     for (var i = 0; i < refStrings.length; i++) {
-      cards.add(Card(
-        child: new InkWell(
-          onTap: () {
-            Navigator.push(context, new MaterialPageRoute(
-                builder: (context) => new ChatScreen(
-                    title: "Test Chat", refString: refStrings[i])));
-          },
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Text(refStrings[i], style: TextStyle(fontSize: 22.0)),
+      if ((refStrings[i] == 'demoRoom' && currDif[0] <= 0.0001 && currDif[1] <= 0.0001) ||
+          (refStrings[i] == 'demoRoom2' && currDif[0] <= 0.00005 && currDif[1] <= 0.00005) ||
+          (refStrings[i] != 'demoRoom' && refStrings[i] != 'demoRoom2')) {
+        cards.add(Card(
+          child: new InkWell(
+            onTap: () {
+              Navigator.push(context, new MaterialPageRoute(
+                  builder: (context) =>
+                  new ChatScreen(
+                      title: titleStrings[i], refString: refStrings[i])));
+            },
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Text(titleStrings[i], style: TextStyle(fontSize: 22.0)),
+            ),
           ),
-        ),
-      ));
+        ));
+      }
     }
 
-    cards.add(RichText(
-      text: TextSpan(
-        text: 'Location',
-        style: DefaultTextStyle.of(context).style,
-        children: <TextSpan>[
-          TextSpan(text: '$currLoc', style: TextStyle(fontWeight: FontWeight.bold)),
-        ],
-      ),
-    ));
+    // For testing latitude and longitude difference
+//    cards.add(RichText(
+//      text: TextSpan(
+//        text: 'Location',
+//        style: DefaultTextStyle.of(context).style,
+//        children: <TextSpan>[
+//          TextSpan(text: '$currDif', style: TextStyle(fontWeight: FontWeight.bold)),
+//        ],
+//      ),
+//    ));
 
     return new Scaffold(
       appBar: AppBar(
